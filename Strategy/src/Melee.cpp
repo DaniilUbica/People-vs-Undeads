@@ -1,10 +1,10 @@
 #include "../include/Enemies/Melee.h"
 #include "../include/Textures.h"
-
+#include <iostream>
 Character* findNext(Character* lhs, std::deque<Character*>& allies) {
-    for (Character* c : allies) {
-        if (lhs == c) {
-            return c;
+    for (int i = 0; i < allies.size() - 1; i++) {
+        if (lhs == allies[i]) {
+            return allies[i + 1];
         }
     }
     return allies.front();
@@ -126,25 +126,18 @@ bool Melee::checkCollisionWithEnemies(std::deque<Character*> enemies) {
 }
 
 bool Melee::checkCollisionWithAllies(std::deque<Character*> allies) {
-    float x1 = this->sprite.getPosition().x;
-    float x2 = findNext(this, allies)->getPosition().x;
-    if (this->is_active) {
+    for (int i = 0; i < allies.size(); i++) {
+        Character* other = allies[i];
         if (from_left) {
-            if (x2 > x1) {
-                if (x2 - x1 < (SPRITE_SIZE + INTERVAL + 1)) {
-                    x1 -= SPRITE_SIZE + INTERVAL - (x2 - x1);
-                    this->coordX = x1;
-                    return true;
-                }
+            if (other->getPosition().x > this->getPosition().x && other->getPosition().x - this->getPosition().x < INTERVAL + SPRITE_SIZE) {
+                this->coordX -= SPRITE_SIZE + INTERVAL - (other->getPosition().x - this->getPosition().x);
+                return true;
             }
         }
         else {
-            if (x2 < x1) {
-                if (x1 - x2 < (SPRITE_SIZE + INTERVAL + 1)) {
-                    x1 += SPRITE_SIZE + INTERVAL - (x1 - x2);
-                    this->coordX = x1;
-                    return true;
-                }
+            if (other->getPosition().x < this->getPosition().x && abs(other->getPosition().x - this->getPosition().x) < INTERVAL + SPRITE_SIZE) {
+                this->coordX += SPRITE_SIZE + INTERVAL - (this->getPosition().x - other->getPosition().x);
+                return true;
             }
         }
     }

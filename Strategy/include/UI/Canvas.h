@@ -7,7 +7,7 @@ class Canvas {
 private:
 	Button* melee;
 public:
-	Canvas();
+	Canvas(sf::Font& font);
 	~Canvas();
 
 	void drawButtons(sf::RenderWindow& window);

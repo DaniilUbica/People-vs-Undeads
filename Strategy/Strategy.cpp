@@ -12,7 +12,7 @@ int main()
 
     Melee* m1 = new Melee(100, 200, true);
     Melee* m2 = new Melee(700, 200, false);
-    Melee* m3 = new Melee(20, 200, true);
+    Melee* m3 = new Melee(35, 200, true);
     Melee* m4 = new Melee(800, 200, false);
     const float start_btn_pos = 30.0;
     const float interval = 15.0;
@@ -26,6 +26,7 @@ int main()
     std::deque<Character*> player;
     player.push_back(m1);
     player.push_back(m3);
+    player.push_back(new Melee(0, 200, true));
 
     std::deque<Character*> enemy;
     enemy.push_back(m2);
