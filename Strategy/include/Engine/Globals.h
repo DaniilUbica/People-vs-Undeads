@@ -24,3 +24,11 @@ constexpr auto MELEE_SPEED = 0.03;
 constexpr auto ANIMATION_SPEED = 0.003;
 
 constexpr auto MELEE_COOLDOWN = 3.0;
+
+constexpr auto START_MONEY_VALUE = 300;
+constexpr auto MELEE_COST = 50;
+constexpr auto RANGE_COST = 75;
+constexpr auto TANK_COST = 150;
+constexpr auto SUPPORT_COST = 250;
+
+constexpr auto KILL_REWARD = 50;

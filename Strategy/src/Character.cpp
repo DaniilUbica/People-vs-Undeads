@@ -13,9 +13,9 @@ void Character::Attack(Character* enemy) {
 	}
 }
 
-void Character::playDeathAnimation() {
+void Character::playDeathAnimation(float time) {
 	if (roundf(this->death_animation->currentFrame) != death_animation->frames.size()) {
-		this->sprite = death_animation->Tick(!from_left);
+		this->sprite = death_animation->Tick(time, !from_left);
 	}
 	else {
 		is_dead = true;

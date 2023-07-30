@@ -5,35 +5,42 @@
 #include "./include/Textures.h"
 #include "./include/UI/Canvas.h"
 
+void checkReword(std::deque<Character*> enemies, int& prev_amount, Canvas& canvas) {
+    if (prev_amount > enemies.size()) {
+        canvas.addMoney(KILL_REWARD);
+        prev_amount = enemies.size();
+    }
+}
+
 int main()
 {
     setTextures();
     sf::RenderWindow window(sf::VideoMode(800, 400), "Strategy");
+    window.setVerticalSyncEnabled(true);
 
-    Melee* m1 = new Melee(100, 200, true);
-    Melee* m2 = new Melee(700, 200, false);
-    Melee* m3 = new Melee(35, 200, true);
-    Melee* m4 = new Melee(800, 200, false);
     const float start_btn_pos = 30.0;
     const float interval = 15.0;
 
     sf::Font font;
     font.loadFromFile("./Assets/fonts/font.TTF");
 
-    Canvas canvas;
+    Canvas canvas(font);
     canvas.addButton(start_btn_pos, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Melee", font), MELEE_COOLDOWN, MELEE);
 
     std::deque<Character*> player;
-    player.push_back(m1);
-    player.push_back(m3);
-    player.push_back(new Melee(0, 200, true));
 
     std::deque<Character*> enemy;
-    enemy.push_back(m2);
-    enemy.push_back(m4);
+
+    int prev = enemy.size();
+
+    sf::Clock clock;
 
     while (window.isOpen())
     {
+        float time = clock.getElapsedTime().asMicroseconds();
+        clock.restart();
+        time /= 400;
+
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -44,7 +51,7 @@ int main()
         window.clear(sf::Color::White);
         if (player.size() > 0) {
             for (Character* ch : player) {
-                ch->Update(enemy, player);
+                ch->Update(time, enemy, player);
                 window.draw(ch->getSprite());
                 if (ch->getActive()) {
                     ch->getHealthbar().drawHealthBar(window);
@@ -53,7 +60,7 @@ int main()
         }
         if (enemy.size() > 0) {
             for (Character* ch : enemy) {
-                ch->Update(player, enemy);
+                ch->Update(time, player, enemy);
                 window.draw(ch->getSprite());
                 if (ch->getActive()) {
                     ch->getHealthbar().drawHealthBar(window);
@@ -65,12 +72,14 @@ int main()
         UnitType unit = canvas.checkClick(window, event);
         switch (unit) {
         case MELEE:
-            player.push_back(new Melee(0, 200, true));
+            player.push_back(new Melee(time, 0, 200, true));
+            enemy.push_back(new Melee(time, 800, 200, false));
+            prev++;
             break;
         default:
             break;
         }
-
+        checkReword(enemy, prev, canvas);
         canvas.drawButtons(window);
         canvas.drawTimers(window);
         window.display();

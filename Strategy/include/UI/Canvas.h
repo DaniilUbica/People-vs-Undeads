@@ -14,11 +14,14 @@ enum UnitType {
 
 class Canvas {
 private:
+	int money;
+	sf::Text money_txt;
 	Button* melee;
 	Timer* melee_timer;
 	std::map<Button*, UnitType> units;
 	std::map<Button*, Timer*> buttons_timers;
 public:
+	Canvas(sf::Font& font);
 	~Canvas();
 
 	void drawButtons(sf::RenderWindow& window);
@@ -26,4 +29,5 @@ public:
 	void Update(sf::RenderWindow& window);
 	void addButton(float x, float y, float w, float h, sf::Vector3i border_color, sf::Vector3i button_color, sf::Vector3i text_color, sf::Text text, float time, UnitType type);
 	UnitType checkClick(sf::RenderWindow& window, sf::Event& event);
+	void addMoney(int money);
 };

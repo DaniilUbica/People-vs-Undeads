@@ -1,19 +1,10 @@
 #include "../include/Enemies/Melee.h"
 #include "../include/Textures.h"
-#include <iostream>
-Character* findNext(Character* lhs, std::deque<Character*>& allies) {
-    for (int i = 0; i < allies.size() - 1; i++) {
-        if (lhs == allies[i]) {
-            return allies[i + 1];
-        }
-    }
-    return allies.front();
-}
 
-Melee::Melee(int x, int y, bool from_left) {
+Melee::Melee(float time, int x, int y, bool from_left) {
     idle_animation = new Animation(orc_melee_animation[STAY], 0, 0, 22, 32, 10, ANIMATION_SPEED, 32);
     run_animation = new Animation(orc_melee_animation[RUN], 0, 0, 24, 32, 10, ANIMATION_SPEED, 32);
-    attack_animation = new Animation(orc_melee_animation[ATTACK], 0, 0, 32, 32, 10, ANIMATION_SPEED, 32);
+    attack_animation = new Animation(orc_melee_animation[ATTACK], 0, 0, 32, 32, 10, ANIMATION_SPEED * 1.2, 32);
     death_animation = new Animation(orc_melee_animation[DEATH], 0, 0, 32, 32, 14, ANIMATION_SPEED, 32);
 
     this->health = 5;
@@ -29,30 +20,16 @@ Melee::Melee(int x, int y, bool from_left) {
 }
 
 void Melee::Update() {
-    state = RUN;
-    switch (state) {
-    case RUN:
-        this->sprite = death_animation->Tick(false);
-        break;
-    case STAY:
-        this->sprite = idle_animation->Tick(false);
-        break;
-    case ATTACK:
-        this->sprite = attack_animation->Tick(false);
-        break;
-    default:
-        break;
-    }
-    this->sprite.setPosition(coordX, coordY);
+
 }
 
-void Melee::Update(std::deque<Character*>& enemies, std::deque<Character*>& allies) {
+void Melee::Update(float time, std::deque<Character*>& enemies, std::deque<Character*>& allies) {
     if (health > 0) {
         if (from_left) {
-            this->coordX += MELEE_SPEED;
+            this->coordX += MELEE_SPEED * time;
         }
         else {
-            this->coordX -= MELEE_SPEED;
+            this->coordX -= MELEE_SPEED * time;
         }
 
         if (allies.size() > 0 && (checkCollisionWithAllies(allies) || enemies.size() > 0 && checkCollisionWithEnemies(enemies) && !enemies.front()->getActive())) {
@@ -67,13 +44,13 @@ void Melee::Update(std::deque<Character*>& enemies, std::deque<Character*>& alli
 
         switch (state) {
         case RUN:
-            this->sprite = run_animation->Tick(!from_left);
+            this->sprite = run_animation->Tick(time, !from_left);
             break;
         case STAY:
-            this->sprite = idle_animation->Tick(!from_left);
+            this->sprite = idle_animation->Tick(time, !from_left);
             break;
         case ATTACK:
-            this->sprite = attack_animation->Tick(!from_left);
+            this->sprite = attack_animation->Tick(time, !from_left);
             Attack(enemies.front());
             break;
         default:
@@ -81,7 +58,7 @@ void Melee::Update(std::deque<Character*>& enemies, std::deque<Character*>& alli
         }
     }
     else {
-        playDeathAnimation();
+        playDeathAnimation(time);
         this->is_active = false;
     }
     if (enemies.size() > 0) {
@@ -129,13 +106,13 @@ bool Melee::checkCollisionWithAllies(std::deque<Character*> allies) {
     for (int i = 0; i < allies.size(); i++) {
         Character* other = allies[i];
         if (from_left) {
-            if (other->getPosition().x > this->getPosition().x && other->getPosition().x - this->getPosition().x < INTERVAL + SPRITE_SIZE) {
+            if (other->getPosition().x > this->getPosition().x && other->getPosition().x - this->getPosition().x < INTERVAL + SPRITE_SIZE - 1) {
                 this->coordX -= SPRITE_SIZE + INTERVAL - (other->getPosition().x - this->getPosition().x);
                 return true;
             }
         }
         else {
-            if (other->getPosition().x < this->getPosition().x && abs(other->getPosition().x - this->getPosition().x) < INTERVAL + SPRITE_SIZE) {
+            if (other->getPosition().x < this->getPosition().x && abs(other->getPosition().x - this->getPosition().x) < INTERVAL + SPRITE_SIZE - 1) {
                 this->coordX += SPRITE_SIZE + INTERVAL - (this->getPosition().x - other->getPosition().x);
                 return true;
             }
