@@ -13,13 +13,14 @@ private:
 	const float BAR_HEIGHT = 15.0;
 	sf::Sprite sprite;
 	bool is_end;
+	sf::Clock clock;
 public:
 	Timer(float time, float coordX, float coordY, float width, float height);
 
-	void Update(float time);
+	void Update();
+	void Restart();
 
 	bool getEnd();
-
 	sf::RectangleShape getRect();
 	sf::Sprite getSprite();
 };

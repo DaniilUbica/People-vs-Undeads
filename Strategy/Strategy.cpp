@@ -20,8 +20,8 @@ int main()
     sf::Font font;
     font.loadFromFile("./Assets/fonts/font.TTF");
 
-    Button melee(start_btn_pos, 40.0, 40.0, 40.0, sf::Vector3i(168, 79, 79),
-        sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Melee", font));
+    Canvas canvas;
+    canvas.addButton(start_btn_pos, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Melee", font), MELEE_COOLDOWN, MELEE);
 
     std::deque<Character*> player;
     player.push_back(m1);
@@ -39,11 +39,6 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-        }
-
-        if (melee.checkClick(window, event)) {
-            player.push_back(new Melee(player.back()->getPosition().x - 70.0, 200, true));
-            melee.setActive(false);
         }
 
         window.clear(sf::Color::White);
@@ -65,13 +60,28 @@ int main()
                 }
             }
         }
-        melee.Update(window);
-        melee.drawButton(window);
+        canvas.Update(window);
+
+        UnitType unit = canvas.checkClick(window, event);
+        switch (unit) {
+        case MELEE:
+            player.push_back(new Melee(0, 200, true));
+            break;
+        default:
+            break;
+        }
+
+        canvas.drawButtons(window);
+        canvas.drawTimers(window);
         window.display();
     }
 
-    delete m1;
-    delete m2;
+    for (Character* c : player) {
+        delete c;
+    }
+    for (Character* c : enemy) {
+        delete c;
+    }
 
     return 0;
 }

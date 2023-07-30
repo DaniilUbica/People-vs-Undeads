@@ -1,11 +1,12 @@
 #include "../include/UI/Timer.h"
-
+#include "../include/Engine/Globals.h"
+#include <iostream>
 Timer::Timer(float time, float coordX, float coordY, float width, float height) {
 	max_time = time;
+	is_end = false;
 	this->width = width;
 	this->height = height;
 
-	//sprite.setTexture(texture);
 	rect.setSize(sf::Vector2f(width, height));
 	rect.setFillColor(sf::Color(255, 255, 255, 127));
 
@@ -15,16 +16,22 @@ Timer::Timer(float time, float coordX, float coordY, float width, float height) 
 	rect.setPosition(coordX, coordY + height);
 }
 
-void Timer::Update(float time) {
-	if (time < max_time) {
-		rect.setSize(sf::Vector2f(width, -height + frame_size * time));
-		if (rect.getSize().y <= 0) {
-			is_end = true;
-		}
-		else {
-			is_end = false;
-		}
+void Timer::Update() {
+
+	sf::Time timer;
+	timer = clock.getElapsedTime();
+	if (timer.asSeconds() >= max_time) {
+		is_end = true;
 	}
+
+	if (timer.asSeconds() < max_time) {
+		rect.setSize(sf::Vector2f(width, -height + frame_size * timer.asSeconds()));
+	}
+}
+
+void Timer::Restart() {
+	is_end = false;
+	clock.restart();
 }
 
 bool Timer::getEnd() {

@@ -22,3 +22,5 @@ constexpr auto INTERVAL = 15.0;
 constexpr auto MELEE_SPEED = 0.03;
 
 constexpr auto ANIMATION_SPEED = 0.003;
+
+constexpr auto MELEE_COOLDOWN = 3.0;
