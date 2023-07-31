@@ -107,13 +107,13 @@ bool Melee::checkCollisionWithAllies(std::deque<Character*> allies) {
     for (int i = 0; i < allies.size(); i++) {
         Character* other = allies[i];
         if (from_left) {
-            if (other->getPosition().x > this->getPosition().x && other->getPosition().x - this->getPosition().x < INTERVAL + SPRITE_SIZE - 1) {
+            if (other->getPosition().x > this->getPosition().x && other->getPosition().x - this->getPosition().x < INTERVAL + SPRITE_SIZE) {
                 this->coordX -= SPRITE_SIZE + INTERVAL - (other->getPosition().x - this->getPosition().x);
                 return true;
             }
         }
         else {
-            if (other->getPosition().x < this->getPosition().x && abs(other->getPosition().x - this->getPosition().x) < INTERVAL + SPRITE_SIZE - 1) {
+            if (other->getPosition().x < this->getPosition().x && abs(other->getPosition().x - this->getPosition().x) < INTERVAL + SPRITE_SIZE) {
                 this->coordX += SPRITE_SIZE + INTERVAL - (this->getPosition().x - other->getPosition().x);
                 return true;
             }

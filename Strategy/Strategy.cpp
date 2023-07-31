@@ -43,7 +43,7 @@ int main()
     {
         float time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
-        time /= 400;
+        time /= 300;
 
         sf::Event event;
         while (window.pollEvent(event))
@@ -86,7 +86,7 @@ int main()
         switch (unit) {
         case MELEE:
             player.push_back(new Melee(time, 0, 200, true));
-            enemy.push_back(new Melee(time, 800, 200, false));
+            enemy.push_back(new Melee(time, 750, 200, false));
             prev++;
             break;
         default:

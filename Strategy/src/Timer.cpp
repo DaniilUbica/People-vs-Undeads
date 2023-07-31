@@ -1,6 +1,6 @@
 #include "../include/UI/Timer.h"
 #include "../include/Engine/Globals.h"
-#include <iostream>
+
 Timer::Timer(float time, float coordX, float coordY, float width, float height) {
 	max_time = time;
 	is_end = false;
