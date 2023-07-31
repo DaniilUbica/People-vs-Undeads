@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "State.h"
 #include "../UI/HealthBar.h"
+#include "../Townhall.h"
 
 enum Direction {
 	LEFT,
@@ -17,12 +18,12 @@ enum Direction {
 
 class Character : public GameObject {
 protected:
-	int health;
 	int damage;
 	float angle = 0;
 	bool from_left;
 	bool is_active = true;
 	bool is_dead = false;
+	int health;
 	HealthBar* healthbar;
 	Direction direction;
 	State state;
@@ -32,10 +33,11 @@ protected:
 	Animation* attack_animation;
 	Animation* death_animation;
 public:
-	virtual void Update(float time, std::deque<Character*>& enemies, std::deque<Character*>& allies) = 0;
+	virtual void Update(float time, std::deque<Character*>& enemies, std::deque<Character*>& allies, Townhall* th) = 0;
 	virtual void checkCollision(std::vector<Object> objects);
 	virtual void takeDamage(int damage);
 	virtual void Attack(Character* enemy);
+	virtual void Attack(Townhall* th);
 	void playDeathAnimation(float time);
 
 	int getHP();

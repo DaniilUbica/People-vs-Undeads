@@ -11,8 +11,6 @@ protected:
 	float coordX, coordY, width, height;
 	sf::Sprite sprite;
 public:
-	virtual void Update() = 0;
-
 	sf::Sprite getSprite();
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize();

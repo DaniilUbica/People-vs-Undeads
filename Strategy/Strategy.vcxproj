@@ -150,6 +150,7 @@
     <ClCompile Include="src\Melee.cpp" />
     <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\Townhall.cpp" />
     <ClCompile Include="src\View.cpp" />
     <ClCompile Include="Strategy.cpp" />
   </ItemGroup>
@@ -169,6 +170,7 @@
     <ClInclude Include="include\Sound\SoundManager.h" />
     <ClInclude Include="include\Sound\Sounds.h" />
     <ClInclude Include="include\Textures.h" />
+    <ClInclude Include="include\Townhall.h" />
     <ClInclude Include="include\UI\Button.h" />
     <ClInclude Include="include\UI\Canvas.h" />
     <ClInclude Include="include\UI\HealthBar.h" />

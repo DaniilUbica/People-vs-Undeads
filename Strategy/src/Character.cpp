@@ -13,6 +13,13 @@ void Character::Attack(Character* enemy) {
 	}
 }
 
+void Character::Attack(Townhall* th) {
+	if (roundf(this->attack_animation->currentFrame) == this->attack_animation->frames.size()) {
+		th->takeDamage(this->damage);
+		this->attack_animation->currentFrame = 0.0;
+	}
+}
+
 void Character::playDeathAnimation(float time) {
 	if (roundf(this->death_animation->currentFrame) != death_animation->frames.size()) {
 		this->sprite = death_animation->Tick(time, !from_left);

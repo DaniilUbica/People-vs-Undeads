@@ -4,6 +4,7 @@
 #include "./include/Enemies/Melee.h"
 #include "./include/Textures.h"
 #include "./include/UI/Canvas.h"
+#include "./include/Townhall.h"
 
 void checkReword(std::deque<Character*> enemies, int& prev_amount, Canvas& canvas) {
     if (prev_amount > enemies.size()) {
@@ -27,6 +28,9 @@ int main()
     Canvas canvas(font);
     canvas.addButton(start_btn_pos, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Melee", font), MELEE_COOLDOWN, MELEE);
 
+    Townhall th_player(0, 150, 50, 100);
+    Townhall th_enemy(750, 150, 50, 100);
+
     std::deque<Character*> player;
 
     std::deque<Character*> enemy;
@@ -49,9 +53,18 @@ int main()
         }
 
         window.clear(sf::Color::White);
+
+        window.draw(th_player.rect);
+        th_player.healthbar->drawHealthBar(window);
+        th_player.Update();
+
+        window.draw(th_enemy.rect);
+        th_enemy.healthbar->drawHealthBar(window);
+        th_enemy.Update();
+
         if (player.size() > 0) {
             for (Character* ch : player) {
-                ch->Update(time, enemy, player);
+                ch->Update(time, enemy, player, &th_enemy);
                 window.draw(ch->getSprite());
                 if (ch->getActive()) {
                     ch->getHealthbar().drawHealthBar(window);
@@ -60,7 +73,7 @@ int main()
         }
         if (enemy.size() > 0) {
             for (Character* ch : enemy) {
-                ch->Update(time, player, enemy);
+                ch->Update(time, player, enemy, &th_player);
                 window.draw(ch->getSprite());
                 if (ch->getActive()) {
                     ch->getHealthbar().drawHealthBar(window);
@@ -79,9 +92,12 @@ int main()
         default:
             break;
         }
+
         checkReword(enemy, prev, canvas);
+
         canvas.drawButtons(window);
         canvas.drawTimers(window);
+
         window.display();
     }
 
