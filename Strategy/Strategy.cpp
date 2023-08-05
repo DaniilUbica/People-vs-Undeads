@@ -5,6 +5,7 @@
 #include "./include/Textures.h"
 #include "./include/UI/Canvas.h"
 #include "./include/Townhall.h"
+#include "./include/AI.h"
 
 void checkReword(std::deque<Character*> enemies, int& prev_amount, Canvas& canvas) {
     if (prev_amount > enemies.size()) {
@@ -35,6 +36,8 @@ int main()
 
     std::deque<Character*> enemy;
 
+    AI ai;
+
     int prev = enemy.size();
 
     sf::Clock clock;
@@ -62,6 +65,8 @@ int main()
         th_enemy.healthbar->drawHealthBar(window);
         th_enemy.Update();
 
+        ai.Update(enemy);
+
         if (player.size() > 0) {
             for (Character* ch : player) {
                 ch->Update(time, enemy, player, &th_enemy);
@@ -85,16 +90,13 @@ int main()
         UnitType unit = canvas.checkClick(window, event);
         switch (unit) {
         case MELEE:
-            player.push_back(new Melee(time, 0, 200, true));
-            enemy.push_back(new Melee(time, 750, 200, false));
-            prev++;
+            player.push_back(new Melee(0, 200, true));
             break;
         default:
             break;
         }
 
         checkReword(enemy, prev, canvas);
-
         canvas.drawButtons(window);
         canvas.drawTimers(window);
 

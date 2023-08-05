@@ -1,7 +1,7 @@
 #include "../include/Enemies/Melee.h"
 #include "../include/Textures.h"
 
-Melee::Melee(float time, int x, int y, bool from_left) {
+Melee::Melee(int x, int y, bool from_left) {
     idle_animation = new Animation(orc_melee_animation[STAY], 0, 0, 22, 32, 10, ANIMATION_SPEED, 32);
     run_animation = new Animation(orc_melee_animation[RUN], 0, 0, 24, 32, 10, ANIMATION_SPEED, 32);
     attack_animation = new Animation(orc_melee_animation[ATTACK], 0, 0, 32, 32, 10, ANIMATION_SPEED * 1.3, 32);

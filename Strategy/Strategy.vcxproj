@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AI.cpp" />
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Canvas.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Strategy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\AI.h" />
     <ClInclude Include="include\Enemies\Melee.h" />
     <ClInclude Include="include\Enemies\View.h" />
     <ClInclude Include="include\Engine\Animation.h" />

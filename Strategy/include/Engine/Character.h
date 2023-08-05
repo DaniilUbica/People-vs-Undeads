@@ -8,6 +8,14 @@
 #include "../UI/HealthBar.h"
 #include "../Townhall.h"
 
+enum UnitType {
+	MELEE,
+	RANGE,
+	SUPPORT,
+	TANK,
+	NO_TYPE,
+};
+
 enum Direction {
 	LEFT,
 	RIGHT,

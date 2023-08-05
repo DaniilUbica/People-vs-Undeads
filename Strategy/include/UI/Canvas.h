@@ -3,14 +3,7 @@
 #include "../Engine/Globals.h"
 #include "./Button.h"
 #include "./Timer.h"
-
-enum UnitType {
-	MELEE,
-	RANGE,
-	SUPPORT,
-	TANK,
-	NO_TYPE,
-};
+#include "../Engine/Character.h"
 
 class Canvas {
 private:

@@ -7,7 +7,7 @@ class Melee : public Character {
 private:
 
 public:
-    Melee(float time, int x, int y, bool from_left);
+    Melee(int x, int y, bool from_left);
 
     void Update(float time, std::deque<Character*>& enemies, std::deque<Character*>& allies, Townhall* th);
     bool checkCollisionWithEnemies(std::deque<Character*> enemies);
