@@ -1,13 +1,11 @@
 #include "../include/Engine/Character.h"
 
-#include <math.h>
-
 void Character::takeDamage(int damage) {
 	health -= damage;
 }
 
 void Character::Attack(Character* enemy) {
-	if (roundf(this->attack_animation->currentFrame) == this->attack_animation->frames.size() && enemy->is_active) {
+	if (roundf(this->attack_animation->currentFrame) == this->attack_animation->frames.size()) {
 		enemy->takeDamage(this->damage);
 		this->attack_animation->currentFrame = 0.0;
 	}
@@ -15,7 +13,7 @@ void Character::Attack(Character* enemy) {
 
 void Character::Attack(Townhall* th) {
 	if (roundf(this->attack_animation->currentFrame) == this->attack_animation->frames.size()) {
-		th->takeDamage(this->damage);
+		th->takeDamage(1);
 		this->attack_animation->currentFrame = 0.0;
 	}
 }
@@ -49,6 +47,10 @@ bool Character::getDead() {
 	return is_dead;
 }
 
+UnitType Character::getType() {
+	return type;
+}
+
 int Character::getHP() {
 	return health;
 }
@@ -63,6 +65,14 @@ void Character::setDirection(Direction direction) {
 
 void Character::setAngle(float angle) {
 	this->angle = angle;
+}
+
+Character::~Character() {
+	delete healthbar;
+	delete idle_animation;
+	delete run_animation;
+	delete attack_animation;
+	delete death_animation;
 }
 
 void Character::checkCollision(std::vector<Object> objects) {

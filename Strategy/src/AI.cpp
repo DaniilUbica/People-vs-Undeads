@@ -1,9 +1,10 @@
 #include "../include/AI.h"
 #include <iostream>
 
-AI::AI() {
+AI::AI(std::deque<Character*>& units) {
 	money = START_MONEY_VALUE;
 	melee = new Timer(MELEE_COOLDOWN, 0, 0, 0, 50);
+	prev = units.size();
 }
 
 AI::~AI() {
@@ -16,6 +17,17 @@ void AI::Update(std::deque<Character*>& units) {
 		sendUnit(units, MELEE);
 		melee->Restart();
 	}
+}
+
+void AI::Analyse(std::deque<Character*> units, std::deque<Character*>& enemies) {
+	checkReward(enemies);
+}
+
+void AI::checkReward(std::deque<Character*> enemies) {
+	if (prev > enemies.size()) {
+		money += KILL_REWARD;
+	}
+		prev = enemies.size();
 }
 
 void AI::sendUnit(std::deque<Character*>& units, UnitType type) {

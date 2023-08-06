@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="src\AI.cpp" />
     <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\Bullet.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Canvas.cpp" />
     <ClCompile Include="src\Character.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="src\HealthBar.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\Melee.cpp" />
+    <ClCompile Include="src\Range.cpp" />
     <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Townhall.cpp" />
@@ -157,8 +159,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AI.h" />
-    <ClInclude Include="include\Enemies\Melee.h" />
-    <ClInclude Include="include\Enemies\View.h" />
     <ClInclude Include="include\Engine\Animation.h" />
     <ClInclude Include="include\Engine\Character.h" />
     <ClInclude Include="include\Engine\CircleBuffer.hpp" />
@@ -177,6 +177,9 @@
     <ClInclude Include="include\UI\Canvas.h" />
     <ClInclude Include="include\UI\HealthBar.h" />
     <ClInclude Include="include\UI\Timer.h" />
+    <ClInclude Include="include\Units\Bullet.h" />
+    <ClInclude Include="include\Units\Melee.h" />
+    <ClInclude Include="include\Units\Range.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,16 +1,18 @@
-#include "../include/Units/Melee.h"
+#include "../include/Units/Range.h"
 #include "../include/Textures.h"
 
-Melee::Melee(int x, int y, bool from_left) {
+Range::Range(int x, int y, bool from_left) {
     idle_animation = new Animation(orc_melee_animation[STAY], 0, 0, 22, 32, 10, ANIMATION_SPEED, 32);
     run_animation = new Animation(orc_melee_animation[RUN], 0, 0, 24, 32, 10, ANIMATION_SPEED, 32);
     attack_animation = new Animation(orc_melee_animation[ATTACK], 0, 0, 32, 32, 10, ANIMATION_SPEED * 1.3, 32);
     death_animation = new Animation(orc_melee_animation[DEATH], 0, 0, 32, 32, 14, ANIMATION_SPEED * 1.3, 32);
 
-    type = MELEE;
+    bullet = new Bullet(-10, 10);
 
-    this->health = 40;
-    this->damage = 1;
+    type = RANGE;
+
+    this->health = 20;
+    this->damage = 12;
     this->healthbar = new HealthBar(coordX, coordY, health, 32);
 
     this->coordX = x;
@@ -21,22 +23,27 @@ Melee::Melee(int x, int y, bool from_left) {
     state = RUN;
 }
 
-void Melee::Update(float time, std::deque<Character*>& enemies, std::deque<Character*>& allies, Townhall* th) {
+Range::~Range() {
+    delete bullet;
+}
+
+void Range::Update(float time, std::deque<Character*>& enemies, std::deque<Character*>& allies, Townhall* th) {
     if (health > 0) {
-
-        this->damage = rand() % 12 + 4;
-
-        if (from_left) {
-            this->coordX += MELEE_SPEED * time;
+        if (state == RUN) {
+            if (from_left) {
+                this->coordX += RANGE_SPEED * time;
+            }
+            else {
+                this->coordX -= RANGE_SPEED * time;
+            }
         }
-        else {
-            this->coordX -= MELEE_SPEED * time;
-        }
 
-        if (allies.size() > 0 && (checkCollisionWithAllies(allies) || enemies.size() > 0 && checkCollisionWithEnemies(enemies) && !enemies.front()->getActive())) {
+        if (allies.size() > 0 && (checkCollisionWithAllies(allies) 
+                || enemies.size() > 0 && checkCollisionWithEnemies(enemies) && !enemies.front()->getActive() || bullet->getLaunched())) {
             state = STAY;
         }
-        else if (enemies.size() > 0 && checkCollisionWithEnemies(enemies) && enemies.front()->getActive() || checkCollisionWithTownhall(enemies, th)) {
+        else if (enemies.size() > 0 && checkCollisionWithEnemies(enemies) 
+                && enemies.front()->getActive() || checkCollisionWithTownhall(enemies, th)) {
             state = ATTACK;
         }
         else {
@@ -53,8 +60,10 @@ void Melee::Update(float time, std::deque<Character*>& enemies, std::deque<Chara
         case ATTACK:
             this->sprite = attack_animation->Tick(time, !from_left);
             if (!enemies.empty()) {
-                Attack(enemies.front());
-            } 
+                if (!bullet->getLaunched() && bullet->getPosition().x == -10) {
+                    Shoot();
+                }
+            }
             else {
                 damage = 1;
                 Attack(th);
@@ -63,11 +72,12 @@ void Melee::Update(float time, std::deque<Character*>& enemies, std::deque<Chara
         default:
             break;
         }
+        bullet->Update(time);
+        if (!enemies.empty()) {
+            bullet->checkCollision(enemies.front());
+        }
     }
     else {
-        //if (this->is_active && state == ATTACK) {
-        //    enemies.front()->takeDamage(this->damage);
-        //}
         this->is_active = false;
         playDeathAnimation(time);
     }
@@ -86,24 +96,20 @@ void Melee::Update(float time, std::deque<Character*>& enemies, std::deque<Chara
     this->sprite.setScale(1.5, 1.5);
 }
 
-bool Melee::checkCollisionWithEnemies(std::deque<Character*> enemies) {
+bool Range::checkCollisionWithEnemies(std::deque<Character*> enemies) {
     float x1 = this->sprite.getPosition().x;
     float x2 = enemies.front()->getSprite().getPosition().x;
     if (this->is_active) {
         if (from_left) {
             if (x2 > x1) {
-                if (x2 - x1 < (SPRITE_SIZE + INTERVAL + 1)) {
-                    x1 -= SPRITE_SIZE + INTERVAL - (x2 - x1);
-                    this->coordX = x1;
+                if (x2 - x1 < (SPRITE_SIZE + INTERVAL + 1)*2) {
                     return true;
                 }
             }
         }
         else {
             if (x2 < x1) {
-                if (x1 - x2 < (SPRITE_SIZE + INTERVAL + 1)) {
-                    x1 += SPRITE_SIZE + INTERVAL - (x1 - x2);
-                    this->coordX = x1;
+                if (x1 - x2 < (SPRITE_SIZE + INTERVAL + 1)*2) {
                     return true;
                 }
             }
@@ -112,7 +118,7 @@ bool Melee::checkCollisionWithEnemies(std::deque<Character*> enemies) {
     return false;
 }
 
-bool Melee::checkCollisionWithAllies(std::deque<Character*> allies) {
+bool Range::checkCollisionWithAllies(std::deque<Character*> allies) {
     for (int i = 0; i < allies.size(); i++) {
         Character* other = allies[i];
         if (from_left) {
@@ -131,7 +137,7 @@ bool Melee::checkCollisionWithAllies(std::deque<Character*> allies) {
     return false;
 }
 
-bool Melee::checkCollisionWithTownhall(std::deque<Character*>& enemies, Townhall* th) {
+bool Range::checkCollisionWithTownhall(std::deque<Character*>& enemies, Townhall* th) {
     float x1 = this->sprite.getPosition().x;
     float x2 = th->rect.getPosition().x;
     if (this->is_active) {
@@ -157,8 +163,20 @@ bool Melee::checkCollisionWithTownhall(std::deque<Character*>& enemies, Townhall
     return false;
 }
 
-void Melee::removeEnemy(std::deque<Character*>& enemies) {
+void Range::removeEnemy(std::deque<Character*>& enemies) {
     if (!enemies.front()->getActive() && enemies.front()->getDead()) {
         enemies.pop_front();
     }
+}
+
+void Range::Shoot() {
+    if (roundf(this->attack_animation->currentFrame) == this->attack_animation->frames.size()) {
+        bullet->setPosition(coordX + SPRITE_SIZE / 2, coordY + SPRITE_SIZE / 2);
+        bullet->Launch();
+        this->attack_animation->currentFrame = 0.0;
+    }
+}
+
+Bullet* Range::getBullet() {
+    return bullet;
 }

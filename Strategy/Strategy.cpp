@@ -1,7 +1,8 @@
 ﻿#include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "./include/Enemies/Melee.h"
+#include "./include/Units/Melee.h"
+#include "./include/Units/Range.h"
 #include "./include/Textures.h"
 #include "./include/UI/Canvas.h"
 #include "./include/Townhall.h"
@@ -10,12 +11,13 @@
 void checkReword(std::deque<Character*> enemies, int& prev_amount, Canvas& canvas) {
     if (prev_amount > enemies.size()) {
         canvas.addMoney(KILL_REWARD);
-        prev_amount = enemies.size();
     }
+    prev_amount = enemies.size();
 }
 
-int main()
-{
+int main() {
+    srand(time(NULL));
+
     setTextures();
     sf::RenderWindow window(sf::VideoMode(800, 400), "Strategy");
     window.setVerticalSyncEnabled(true);
@@ -28,6 +30,7 @@ int main()
 
     Canvas canvas(font);
     canvas.addButton(start_btn_pos, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Melee", font), MELEE_COOLDOWN, MELEE);
+    canvas.addButton(start_btn_pos + 60, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Range", font), RANGE_COOLDOWN, RANGE);
 
     Townhall th_player(0, 150, 50, 100);
     Townhall th_enemy(750, 150, 50, 100);
@@ -36,7 +39,7 @@ int main()
 
     std::deque<Character*> enemy;
 
-    AI ai;
+    AI ai(player);
 
     int prev = enemy.size();
 
@@ -66,11 +69,19 @@ int main()
         th_enemy.Update();
 
         ai.Update(enemy);
+        ai.Analyse(enemy, player);
 
         if (player.size() > 0) {
             for (Character* ch : player) {
                 ch->Update(time, enemy, player, &th_enemy);
                 window.draw(ch->getSprite());
+
+                if (ch->getType() == RANGE) {
+                    Range* q = dynamic_cast<Range*>(ch);
+                    window.draw(q->getBullet()->rect);
+                    ch = dynamic_cast<Character*>(q);
+                }
+
                 if (ch->getActive()) {
                     ch->getHealthbar().drawHealthBar(window);
                 }
@@ -91,6 +102,9 @@ int main()
         switch (unit) {
         case MELEE:
             player.push_back(new Melee(0, 200, true));
+            break;
+        case RANGE:
+            player.push_back(new Range(0, 200, true));
             break;
         default:
             break;

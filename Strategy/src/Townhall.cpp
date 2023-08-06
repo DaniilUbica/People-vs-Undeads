@@ -6,7 +6,7 @@ Townhall::Townhall(float x, float y, float h, float w) {
 	this->height = h;
 	this->width = w;
 
-	this->health = 30;
+	this->health = 50;
 
 	this->healthbar = new HealthBar(coordX + 10, coordY, health, 32);
 

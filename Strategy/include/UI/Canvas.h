@@ -9,8 +9,6 @@ class Canvas {
 private:
 	int money;
 	sf::Text money_txt;
-	Button* melee;
-	Timer* melee_timer;
 	std::map<Button*, UnitType> units;
 	std::map<Button*, Timer*> buttons_timers;
 public:
