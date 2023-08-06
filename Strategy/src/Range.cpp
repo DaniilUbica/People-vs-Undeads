@@ -11,7 +11,7 @@ Range::Range(int x, int y, bool from_left) {
 
     type = RANGE;
 
-    this->health = 20;
+    this->health = 15;
     this->damage = 12;
     this->healthbar = new HealthBar(coordX, coordY, health, 32);
 
@@ -38,13 +38,13 @@ void Range::Update(float time, std::deque<Character*>& enemies, std::deque<Chara
             }
         }
 
-        if (allies.size() > 0 && (checkCollisionWithAllies(allies) 
-                || enemies.size() > 0 && checkCollisionWithEnemies(enemies) && !enemies.front()->getActive() || bullet->getLaunched())) {
-            state = STAY;
-        }
-        else if (enemies.size() > 0 && checkCollisionWithEnemies(enemies) 
+        if (enemies.size() > 0 && checkCollisionWithEnemies(enemies) 
                 && enemies.front()->getActive() || checkCollisionWithTownhall(enemies, th)) {
             state = ATTACK;
+        }
+        else if (allies.size() > 0 && (checkCollisionWithAllies(allies) 
+                || enemies.size() > 0 && checkCollisionWithEnemies(enemies) && !enemies.front()->getActive() || bullet->getLaunched())) {
+            state = STAY;
         }
         else {
             state = RUN;
@@ -94,6 +94,7 @@ void Range::Update(float time, std::deque<Character*>& enemies, std::deque<Chara
 
     this->sprite.setPosition(coordX, coordY);
     this->sprite.setScale(1.5, 1.5);
+    this->sprite.setColor(sf::Color::Green);
 }
 
 bool Range::checkCollisionWithEnemies(std::deque<Character*> enemies) {
@@ -123,13 +124,13 @@ bool Range::checkCollisionWithAllies(std::deque<Character*> allies) {
         Character* other = allies[i];
         if (from_left) {
             if (other->getPosition().x > this->getPosition().x && other->getPosition().x - this->getPosition().x < INTERVAL + SPRITE_SIZE) {
-                this->coordX -= SPRITE_SIZE + INTERVAL - (other->getPosition().x - this->getPosition().x);
+                this->coordX -= SPRITE_SIZE + INTERVAL - (other->getPosition().x - this->getPosition().x) - 1;
                 return true;
             }
         }
         else {
             if (other->getPosition().x < this->getPosition().x && abs(other->getPosition().x - this->getPosition().x) < INTERVAL + SPRITE_SIZE) {
-                this->coordX += SPRITE_SIZE + INTERVAL - (this->getPosition().x - other->getPosition().x);
+                this->coordX += SPRITE_SIZE + INTERVAL - (this->getPosition().x - other->getPosition().x) - 1;
                 return true;
             }
         }

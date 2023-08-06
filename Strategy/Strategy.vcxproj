@@ -154,7 +154,6 @@
     <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Townhall.cpp" />
-    <ClCompile Include="src\View.cpp" />
     <ClCompile Include="Strategy.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -22,8 +22,8 @@ constexpr auto RANGE_SPEED = 0.03;
 
 constexpr auto ANIMATION_SPEED = 0.003;
 
-constexpr auto MELEE_COOLDOWN = 3.0;
-constexpr auto RANGE_COOLDOWN = 4.0;
+constexpr auto MELEE_COOLDOWN = 1.0;
+constexpr auto RANGE_COOLDOWN = 1.0;
 
 constexpr auto START_MONEY_VALUE = 300;
 constexpr auto MELEE_COST = 50;
