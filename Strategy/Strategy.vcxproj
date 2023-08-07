@@ -154,6 +154,7 @@
     <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Townhall.cpp" />
+    <ClCompile Include="src\Warrior.cpp" />
     <ClCompile Include="Strategy.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +180,7 @@
     <ClInclude Include="include\Units\Bullet.h" />
     <ClInclude Include="include\Units\Melee.h" />
     <ClInclude Include="include\Units\Range.h" />
+    <ClInclude Include="include\Units\Warrior.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,9 +3,11 @@
 Canvas::Canvas(sf::Font& font) {
 	money = START_MONEY_VALUE;
 	money_txt = sf::Text(std::to_string(money), font);
-	money_txt.setFillColor(sf::Color::Black);
-	money_txt.setPosition(30, 110);
+	money_txt.setFillColor(sf::Color::Yellow);
+	money_txt.setPosition(60, 110);
 	money_txt.setCharacterSize(16);
+
+	money_tick = new Timer(1, 0, 0, 0, 5);
 }
 
 Canvas::~Canvas() {
@@ -13,6 +15,7 @@ Canvas::~Canvas() {
 		delete val.first;
 		delete val.second;
 	}
+	delete money_tick;
 }
 
 void Canvas::drawButtons(sf::RenderWindow& window) {
@@ -28,6 +31,14 @@ void Canvas::drawTimers(sf::RenderWindow& window) {
 }
 
 void Canvas::Update(sf::RenderWindow& window) {
+	if (money_tick->getEnd()) {
+		money += MONEY_PER_TICK;
+		money_tick->Restart();
+	}
+
+	money_tick->Update();
+	money_txt.setString(std::to_string(money));
+
 	for (std::pair<Button*, Timer*> val : buttons_timers) {
 		if (val.second->getEnd()) {
 			UnitType u = units[val.first];

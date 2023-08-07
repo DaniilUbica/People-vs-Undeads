@@ -22,8 +22,8 @@ constexpr auto RANGE_SPEED = 0.03;
 
 constexpr auto ANIMATION_SPEED = 0.003;
 
-constexpr auto MELEE_COOLDOWN = 1.0;
-constexpr auto RANGE_COOLDOWN = 1.0;
+constexpr auto MELEE_COOLDOWN = 3.0;
+constexpr auto RANGE_COOLDOWN = 4.0;
 
 constexpr auto START_MONEY_VALUE = 300;
 constexpr auto MELEE_COST = 50;
@@ -35,3 +35,5 @@ constexpr auto KILL_REWARD = 50;
 
 constexpr auto BULLET_SPEED = 0.09;
 constexpr auto BULLET_DAMAGE = 15;
+
+constexpr auto MONEY_PER_TICK = 2;

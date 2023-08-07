@@ -1,11 +1,11 @@
 #include "../include/Units/Range.h"
 #include "../include/Textures.h"
 
-Range::Range(int x, int y, bool from_left) {
-    idle_animation = new Animation(orc_melee_animation[STAY], 0, 0, 22, 32, 10, ANIMATION_SPEED, 32);
-    run_animation = new Animation(orc_melee_animation[RUN], 0, 0, 24, 32, 10, ANIMATION_SPEED, 32);
-    attack_animation = new Animation(orc_melee_animation[ATTACK], 0, 0, 32, 32, 10, ANIMATION_SPEED * 1.3, 32);
-    death_animation = new Animation(orc_melee_animation[DEATH], 0, 0, 32, 32, 14, ANIMATION_SPEED * 1.3, 32);
+Range::Range(int x, int y, bool from_left, std::map<State, sf::Texture>& textures) {
+    idle_animation = new Animation(textures[STAY], 0, 0, 22, 32, 10, ANIMATION_SPEED, 32);
+    run_animation = new Animation(textures[RUN], 0, 0, 24, 32, 10, ANIMATION_SPEED, 32);
+    attack_animation = new Animation(textures[ATTACK], 0, 0, 32, 32, 10, ANIMATION_SPEED * 1.3, 32);
+    death_animation = new Animation(textures[DEATH], 0, 0, 32, 32, 14, ANIMATION_SPEED * 1.3, 32);
 
     bullet = new Bullet(-10, 10);
 
@@ -27,7 +27,7 @@ Range::~Range() {
     delete bullet;
 }
 
-void Range::Update(float time, std::deque<Character*>& enemies, std::deque<Character*>& allies, Townhall* th) {
+void Range::Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior*>& allies, Townhall* th) {
     if (health > 0) {
         if (state == RUN) {
             if (from_left) {
@@ -97,20 +97,20 @@ void Range::Update(float time, std::deque<Character*>& enemies, std::deque<Chara
     this->sprite.setColor(sf::Color::Green);
 }
 
-bool Range::checkCollisionWithEnemies(std::deque<Character*> enemies) {
+bool Range::checkCollisionWithEnemies(std::deque<Warrior*> enemies) {
     float x1 = this->sprite.getPosition().x;
     float x2 = enemies.front()->getSprite().getPosition().x;
     if (this->is_active) {
         if (from_left) {
             if (x2 > x1) {
-                if (x2 - x1 < (SPRITE_SIZE + INTERVAL + 1)*2) {
+                if (x2 - x1 < (SPRITE_SIZE + INTERVAL + 1) * 2) {
                     return true;
                 }
             }
         }
         else {
             if (x2 < x1) {
-                if (x1 - x2 < (SPRITE_SIZE + INTERVAL + 1)*2) {
+                if (x1 - x2 < (SPRITE_SIZE + INTERVAL + 1) * 2) {
                     return true;
                 }
             }
@@ -119,7 +119,7 @@ bool Range::checkCollisionWithEnemies(std::deque<Character*> enemies) {
     return false;
 }
 
-bool Range::checkCollisionWithAllies(std::deque<Character*> allies) {
+bool Range::checkCollisionWithAllies(std::deque<Warrior*> allies) {
     for (int i = 0; i < allies.size(); i++) {
         Character* other = allies[i];
         if (from_left) {
@@ -136,38 +136,6 @@ bool Range::checkCollisionWithAllies(std::deque<Character*> allies) {
         }
     }
     return false;
-}
-
-bool Range::checkCollisionWithTownhall(std::deque<Character*>& enemies, Townhall* th) {
-    float x1 = this->sprite.getPosition().x;
-    float x2 = th->rect.getPosition().x;
-    if (this->is_active) {
-        if (from_left) {
-            if (x2 > x1) {
-                if (x2 - x1 < (SPRITE_SIZE + INTERVAL + 1)) {
-                    x1 -= SPRITE_SIZE + INTERVAL - (x2 - x1);
-                    this->coordX = x1;
-                    return true;
-                }
-            }
-        }
-        else {
-            if (x2 < x1) {
-                if (x1 - x2 < (SPRITE_SIZE + INTERVAL + 1)) {
-                    x1 += SPRITE_SIZE + INTERVAL - (x1 - x2);
-                    this->coordX = x1;
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
-void Range::removeEnemy(std::deque<Character*>& enemies) {
-    if (!enemies.front()->getActive() && enemies.front()->getDead()) {
-        enemies.pop_front();
-    }
 }
 
 void Range::Shoot() {

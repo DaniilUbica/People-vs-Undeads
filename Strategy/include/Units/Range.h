@@ -1,21 +1,18 @@
 #pragma once
 
-#include "../Engine/Character.h"
-#include "../Engine/Globals.h"
+#include "Warrior.h"
 #include "../Units/Bullet.h"
 
-class Range : public Character {
+class Range : public Warrior {
 private:
     Bullet* bullet;
 public:
-    Range(int x, int y, bool from_left);
+    Range(int x, int y, bool from_left, std::map<State, sf::Texture>& textures);
     ~Range();
 
-    void Update(float time, std::deque<Character*>& enemies, std::deque<Character*>& allies, Townhall* th);
-    bool checkCollisionWithEnemies(std::deque<Character*> enemies);
-    bool checkCollisionWithAllies(std::deque<Character*> allies);
-    bool checkCollisionWithTownhall(std::deque<Character*>& enemies, Townhall* th);
-    void removeEnemy(std::deque<Character*>& enemies);
+    void Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior*>& allies, Townhall* th) override;
+    bool checkCollisionWithEnemies(std::deque<Warrior*> enemies) override;
+    bool checkCollisionWithAllies(std::deque<Warrior*> allies) override;
     void Shoot();
 
     Bullet* getBullet();

@@ -63,6 +63,9 @@
     <ClCompile Include="src\Range.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Warrior.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine\Animation.h">
@@ -129,6 +132,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\Units\Melee.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Units\Warrior.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

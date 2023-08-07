@@ -42,9 +42,6 @@ protected:
 	Animation* attack_animation;
 	Animation* death_animation;
 public:
-	virtual ~Character();
-
-	virtual void Update(float time, std::deque<Character*>& enemies, std::deque<Character*>& allies, Townhall* th) = 0;
 	virtual void checkCollision(std::vector<Object> objects);
 	virtual void takeDamage(int damage);
 	virtual void Attack(Character* enemy);

@@ -67,14 +67,6 @@ void Character::setAngle(float angle) {
 	this->angle = angle;
 }
 
-Character::~Character() {
-	delete healthbar;
-	delete idle_animation;
-	delete run_animation;
-	delete attack_animation;
-	delete death_animation;
-}
-
 void Character::checkCollision(std::vector<Object> objects) {
 	sf::FloatRect rect = this->sprite.getGlobalBounds();
 	for (Object obj : objects) {

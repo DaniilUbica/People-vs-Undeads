@@ -1,17 +1,10 @@
 #pragma once
 
-#include "../Engine/Character.h"
-#include "../Engine/Globals.h"
+#include "Warrior.h"
 
-class Melee : public Character {
-private:
-
+class Melee : public Warrior {
 public:
-    Melee(int x, int y, bool from_left);
+    Melee(int x, int y, bool from_left, std::map<State, sf::Texture>& textures);
 
-    void Update(float time, std::deque<Character*>& enemies, std::deque<Character*>& allies, Townhall* th);
-    bool checkCollisionWithEnemies(std::deque<Character*> enemies);
-    bool checkCollisionWithAllies(std::deque<Character*> allies);
-    bool checkCollisionWithTownhall(std::deque<Character*>& enemies, Townhall* th);
-    void removeEnemy(std::deque<Character*>& enemies);
+    void Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior*>& allies, Townhall* th) override;
 };
