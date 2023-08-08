@@ -6,6 +6,7 @@
 #include "./include/UI/Canvas.h"
 #include "./include/Townhall.h"
 #include "./include/AI.h"
+#include "./include/Tower.h"
 
 void checkReword(std::deque<Warrior*> enemies, int& prev_amount, Canvas& canvas) {
     if (prev_amount > enemies.size()) {
@@ -32,11 +33,13 @@ int main() {
     Canvas canvas(font);
     canvas.addButton(start_btn_pos, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Melee", font), MELEE_COOLDOWN, MELEE);
     canvas.addButton(start_btn_pos + 60, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Range", font), RANGE_COOLDOWN, RANGE);
+    canvas.addButton(1200, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Build\nTower", font), 5.0, TOWER);
 
     Townhall th_player(-50, 475, 50, 100, human_th);
     Townhall th_enemy(1230, 540, 50, 100, orc_portal);
 
     std::deque<Warrior*> player;
+    Tower tower(70, PLAYER_START_Y, true);
 
     std::deque<Warrior*> enemy;
 
@@ -71,8 +74,12 @@ int main() {
         th_enemy.getHealthBar()->drawHealthBar(window);
         th_enemy.Update(time);
 
-        ai.Update(enemy);
         ai.Analyse(enemy, player);
+        ai.Update(enemy);
+
+        tower.Update(time, enemy);
+
+        window.draw(tower.getBullet()->rect);
 
         if (player.size() > 0) {
             for (Warrior* ch : player) {
@@ -101,13 +108,20 @@ int main() {
         }
         canvas.Update(window);
 
-        UnitType Warrior = canvas.checkClick(window, event);
-        switch (Warrior) {
+        UnitType unit = canvas.checkClick(window, event);
+        int start_x = PLAYER_START_X;
+        if (!player.empty() && player.back()->getPosition().x <= PLAYER_START_X) {
+            start_x = player.back()->getPosition().x - INTERVAL;
+        }
+        switch (unit) {
         case MELEE:
-            player.push_back(new Melee(0, 540 + SPRITE_SIZE, true, human_melee_animation));
+            player.push_back(new Melee(start_x, PLAYER_START_Y + SPRITE_SIZE, true, human_melee_animation));
             break;
         case RANGE:
-            player.push_back(new Range(0, 540 + SPRITE_SIZE, true, human_melee_animation));
+            player.push_back(new Range(start_x, PLAYER_START_Y + SPRITE_SIZE, true, human_melee_animation));
+            break;
+        case TOWER:
+            tower.addTowerDamage();
             break;
         default:
             break;

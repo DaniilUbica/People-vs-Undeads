@@ -36,7 +36,7 @@ void Melee::Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior
         if (allies.size() > 0 && (checkCollisionWithAllies(allies) || enemies.size() > 0 && checkCollisionWithEnemies(enemies) && !enemies.front()->getActive())) {
             state = STAY;
         }
-        else if (enemies.size() > 0 && checkCollisionWithEnemies(enemies) && enemies.front()->getActive() || checkCollisionWithTownhall(enemies, th)) {
+        else if (enemies.size() > 0 && checkCollisionWithEnemies(enemies) || checkCollisionWithTownhall(enemies, th)) {
             state = ATTACK;
         }
         else {

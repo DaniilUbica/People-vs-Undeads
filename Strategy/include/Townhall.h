@@ -11,11 +11,9 @@ private:
 	int health;
 	HealthBar* healthbar;
 public:
-	sf::RectangleShape rect;
-
-	Townhall(float x, float y, float h, float w);
 	Townhall(float x, float y, float h, float w, sf::Texture& texture);
 	Townhall(float x, float y, float h, float w, std::map<State, sf::Texture>& textures);
+	~Townhall();
 
 	void Update();
 	void Update(float time);

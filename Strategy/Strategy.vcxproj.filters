@@ -66,6 +66,9 @@
     <ClCompile Include="src\Warrior.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Tower.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine\Animation.h">
@@ -135,6 +138,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\Units\Warrior.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Tower.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

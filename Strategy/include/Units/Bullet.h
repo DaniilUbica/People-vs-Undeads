@@ -10,15 +10,18 @@ private:
 public:
 
 	sf::RectangleShape rect;
-	Bullet(int coordX, int coordY);
+	Bullet(int coordX, int coordY, bool from_left);
 
 	void Launch();
 	void Destroy();
 	void Update(float time);
 	void checkCollision(Character* enemy);
+	void checkCollision(Townhall* th);
+	void checkCollision(Character* enemy, int damage);
 
 	void setTexture(sf::Texture& texture);
 	void setLaunched(bool l);
+	void setDamage(int damage);
 
 	bool getLaunched();
 };

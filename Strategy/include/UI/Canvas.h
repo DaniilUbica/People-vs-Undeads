@@ -12,7 +12,9 @@ private:
 	std::map<Button*, UnitType> units;
 	std::map<Button*, Timer*> buttons_timers;
 	Timer* money_tick;
+	int tower_updates_counter = 0;
 public:
+
 	Canvas(sf::Font& font);
 	~Canvas();
 

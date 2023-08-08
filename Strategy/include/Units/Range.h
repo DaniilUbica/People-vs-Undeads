@@ -13,6 +13,7 @@ public:
     void Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior*>& allies, Townhall* th) override;
     bool checkCollisionWithEnemies(std::deque<Warrior*> enemies) override;
     bool checkCollisionWithAllies(std::deque<Warrior*> allies) override;
+    bool checkCollisionWithTownhall(std::deque<Warrior*>& enemies, Townhall* th) override;
     void Shoot();
 
     Bullet* getBullet();

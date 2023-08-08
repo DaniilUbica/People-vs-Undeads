@@ -7,7 +7,7 @@ Range::Range(int x, int y, bool from_left, std::map<State, sf::Texture>& texture
     attack_animation = new Animation(textures[ATTACK], 0, 0, 32, 32, 10, ANIMATION_SPEED * 1.3, 32);
     death_animation = new Animation(textures[DEATH], 0, 0, 32, 32, 14, ANIMATION_SPEED * 1.3, 32);
 
-    bullet = new Bullet(-10, 10);
+    bullet = new Bullet(-10, 10, from_left);
 
     type = RANGE;
 
@@ -65,14 +65,14 @@ void Range::Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior
                 }
             }
             else {
-                damage = 1;
-                Attack(th);
+                Shoot();
             }
             break;
         default:
             break;
         }
         bullet->Update(time);
+        bullet->checkCollision(th);
         if (!enemies.empty()) {
             bullet->checkCollision(enemies.front());
         }
@@ -132,6 +132,31 @@ bool Range::checkCollisionWithAllies(std::deque<Warrior*> allies) {
             if (other->getPosition().x < this->getPosition().x && abs(other->getPosition().x - this->getPosition().x) < INTERVAL + SPRITE_SIZE) {
                 this->coordX += SPRITE_SIZE + INTERVAL - (this->getPosition().x - other->getPosition().x) - 1;
                 return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Range::checkCollisionWithTownhall(std::deque<Warrior*>& enemies, Townhall* th) {
+    float x1 = this->sprite.getPosition().x;
+    float x2 = th->getSprite().getPosition().x + 150;
+    if (from_left) {
+        x2 = th->getSprite().getPosition().x - 15;
+    }
+    if (this->is_active) {
+        if (from_left) {
+            if (x2 > x1) {
+                if (x2 - x1 < (SPRITE_SIZE + INTERVAL + 1) * 2) {
+                    return true;
+                }
+            }
+        }
+        else {
+            if (x2 < x1) {
+                if (x1 - x2 < (SPRITE_SIZE + INTERVAL + 1) * 2) {
+                    return true;
+                }
             }
         }
     }

@@ -13,6 +13,7 @@ enum UnitType {
 	RANGE,
 	SUPPORT,
 	TANK,
+	TOWER,
 	NO_TYPE,
 };
 

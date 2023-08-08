@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Engine/Character.h"
-#include "../Engine/Globals.h"
+#include "../Townhall.h"
 
 class Warrior : public Character {
 public:

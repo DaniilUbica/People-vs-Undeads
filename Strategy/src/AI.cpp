@@ -29,6 +29,9 @@ void AI::Update(std::deque<Warrior*>& units) {
 
 void AI::Analyse(std::deque<Warrior*> units, std::deque<Warrior*>& enemies) {
 	checkReward(enemies);
+	if (!enemies.empty() && money <= MELEE_COST && units.empty()) {
+		money += KILL_REWARD;
+	}
 }
 
 void AI::checkReward(std::deque<Warrior*> enemies) {
@@ -39,10 +42,14 @@ void AI::checkReward(std::deque<Warrior*> enemies) {
 }
 
 void AI::sendUnit(std::deque<Warrior*>& units, UnitType type) {
+	int start_x = ENEMY_START_X;
+	if (!units.empty() && units.back()->getPosition().x <= PLAYER_START_X) {
+		start_x = units.back()->getPosition().x + INTERVAL;
+	}
 	switch (type) {
 	case MELEE:
 		if (canSend(type)) {
-			units.push_back(new Melee(1230, 540 + SPRITE_SIZE, false, orc_melee_animation));
+			units.push_back(new Melee(start_x, ENEMY_START_Y + SPRITE_SIZE, false, orc_melee_animation));
 			money -= MELEE_COST;
 		}
 		break;
