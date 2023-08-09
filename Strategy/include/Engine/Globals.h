@@ -49,4 +49,4 @@ constexpr auto TOWER_ATTACK_SCALE = 4;
 constexpr auto TOWER_COST_SCALE = 100;
 constexpr auto TOWER_ATTACK_RANGE = 300;
 
-constexpr auto ALLY_DEATH_REWARD = 30;
+constexpr auto ALLY_DEATH_REWARD = 10;

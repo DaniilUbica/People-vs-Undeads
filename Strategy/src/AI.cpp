@@ -26,6 +26,7 @@ void AI::Update(float time, std::deque<Warrior*>& units, std::deque<Warrior*>& e
 	melee->Update();
 	range->Update();
 	tower->Update(time, enemies);
+	std::cout << money << "\n";
 }
 
 void AI::Analyse(std::deque<Warrior*>& units, std::deque<Warrior*>& enemies) {
@@ -41,7 +42,7 @@ void AI::Analyse(std::deque<Warrior*>& units, std::deque<Warrior*>& enemies) {
 		money += KILL_REWARD;
 	}
 	if ((enemies.empty() && units.size() >= 3 || 
-			units.size() - enemies.size() >= 3) && canSend(TOWER)) {
+			units.size() - enemies.size() >= 1) && canSend(TOWER)) {
 		buildTower();
 	}
 	else {

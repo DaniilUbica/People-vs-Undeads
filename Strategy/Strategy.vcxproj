@@ -149,7 +149,6 @@
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\HealthBar.cpp" />
     <ClCompile Include="src\LoseScreen.cpp" />
-    <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\Melee.cpp" />
     <ClCompile Include="src\Menu.cpp" />
     <ClCompile Include="src\Range.cpp" />
@@ -164,11 +163,8 @@
     <ClInclude Include="include\AI.h" />
     <ClInclude Include="include\Engine\Animation.h" />
     <ClInclude Include="include\Engine\Character.h" />
-    <ClInclude Include="include\Engine\CircleBuffer.hpp" />
     <ClInclude Include="include\Engine\GameObject.h" />
     <ClInclude Include="include\Engine\Globals.h" />
-    <ClInclude Include="include\Engine\Map.h" />
-    <ClInclude Include="include\Engine\MapObject.h" />
     <ClInclude Include="include\Engine\State.h" />
     <ClInclude Include="include\Features\Consumable.h" />
     <ClInclude Include="include\Sound\SoundManager.h" />

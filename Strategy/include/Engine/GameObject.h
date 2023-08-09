@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "Animation.h"
-#include "MapObject.h"
 #include "../Sound/SoundManager.h"
 
 class GameObject {
