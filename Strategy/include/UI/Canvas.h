@@ -1,9 +1,8 @@
 #pragma once
 
-#include "../Engine/Globals.h"
-#include "./Button.h"
 #include "./Timer.h"
 #include "../Engine/Character.h"
+#include "../UI/Menu.h"
 
 class Canvas {
 private:
@@ -13,6 +12,8 @@ private:
 	std::map<Button*, Timer*> buttons_timers;
 	Timer* money_tick;
 	int tower_updates_counter = 0;
+	Menu* menu;
+	bool is_playing = false;
 public:
 
 	Canvas(sf::Font& font);
@@ -24,4 +25,7 @@ public:
 	void addButton(float x, float y, float w, float h, sf::Vector3i border_color, sf::Vector3i button_color, sf::Vector3i text_color, sf::Text text, float time, UnitType type);
 	UnitType checkClick(sf::RenderWindow& window, sf::Event& event);
 	void addMoney(int money);
+
+	int getTowerUpdatesCounter();
+	bool getIsPlaying();
 };

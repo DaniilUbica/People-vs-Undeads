@@ -22,7 +22,7 @@ constexpr auto RANGE_SPEED = 0.03;
 
 constexpr auto ANIMATION_SPEED = 0.003;
 
-constexpr auto MELEE_COOLDOWN = 1.0;
+constexpr auto MELEE_COOLDOWN = 3.0;
 constexpr auto RANGE_COOLDOWN = 4.0;
 
 constexpr auto START_MONEY_VALUE = 500;
@@ -39,7 +39,7 @@ constexpr auto BULLET_DAMAGE = 15;
 
 constexpr auto MONEY_PER_TICK = 2;
 
-constexpr auto PLAYER_START_X = 0;
+constexpr auto PLAYER_START_X = 70;
 constexpr auto PLAYER_START_Y = 540;
 constexpr auto ENEMY_START_X = 1230;
 constexpr auto ENEMY_START_Y = 540;
@@ -48,3 +48,5 @@ constexpr auto TOWER_ATTACK_SPEED = 1;
 constexpr auto TOWER_ATTACK_SCALE = 4;
 constexpr auto TOWER_COST_SCALE = 100;
 constexpr auto TOWER_ATTACK_RANGE = 300;
+
+constexpr auto ALLY_DEATH_REWARD = 30;

@@ -23,7 +23,7 @@ void Tower::Update(float time, std::deque<Warrior*>& enemies) {
 			}
 		}
 		else {
-			if (!enemies.empty() && enemies.front()->getPosition().x >= WINDOW_WIDTH + TOWER_ATTACK_RANGE) {
+			if (!enemies.empty() && enemies.front()->getPosition().x >= WINDOW_WIDTH - TOWER_ATTACK_RANGE) {
 				Shoot();
 			}
 		}

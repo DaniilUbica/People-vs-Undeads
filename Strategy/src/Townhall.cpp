@@ -26,7 +26,7 @@ Townhall::Townhall(float x, float y, float h, float w, std::map<State, sf::Textu
 	this->height = h;
 	this->width = w;
 
-	this->health = 50;
+	this->health = 2;
 
 	this->healthbar = new HealthBar(coordX + 10, coordY, health, 32);
 
@@ -50,4 +50,8 @@ void Townhall::takeDamage(int damage) {
 
 HealthBar* Townhall::getHealthBar() {
 	return healthbar;
+}
+
+int Townhall::getHealth() {
+	return health;
 }

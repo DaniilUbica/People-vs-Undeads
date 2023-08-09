@@ -11,7 +11,7 @@ Range::Range(int x, int y, bool from_left, std::map<State, sf::Texture>& texture
 
     type = RANGE;
 
-    this->health = 15;
+    this->health = 20;
     this->damage = 12;
     this->healthbar = new HealthBar(coordX, coordY, health, 32);
 
@@ -71,11 +71,6 @@ void Range::Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior
         default:
             break;
         }
-        bullet->Update(time);
-        bullet->checkCollision(th);
-        if (!enemies.empty()) {
-            bullet->checkCollision(enemies.front());
-        }
     }
     else {
         this->is_active = false;
@@ -90,6 +85,12 @@ void Range::Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior
     }
     else {
         healthbar->Update(coordX, coordY, health);
+    }
+
+    bullet->Update(time);
+    bullet->checkCollision(th);
+    if (!enemies.empty()) {
+        bullet->checkCollision(enemies.front());
     }
 
     this->sprite.setPosition(coordX, coordY);

@@ -8,10 +8,10 @@
 
 class Tower : public GameObject {
 private:
-	int damage = 0;
 	Timer* attack_timer;
 	Bullet* bullet;
 	bool from_left;
+	int damage = 0;
 
 	void Shoot();
 public:

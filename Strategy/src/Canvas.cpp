@@ -7,6 +7,8 @@ Canvas::Canvas(sf::Font& font) {
 	money_txt.setPosition(60, 110);
 	money_txt.setCharacterSize(16);
 
+	menu = new Menu(font);
+
 	money_tick = new Timer(1, 0, 0, 0, 5);
 }
 
@@ -19,47 +21,66 @@ Canvas::~Canvas() {
 }
 
 void Canvas::drawButtons(sf::RenderWindow& window) {
-	for (std::pair<Button*, Timer*> val : buttons_timers) {
-		val.first->drawButton(window);
+	if (is_playing) {
+		for (std::pair<Button*, Timer*> val : buttons_timers) {
+			val.first->drawButton(window);
+		}
+	}
+	if (!is_playing) {
+		menu->showMenu(window);
 	}
 }
 
 void Canvas::drawTimers(sf::RenderWindow& window) {
-	for (std::pair<Button*, Timer*> val : buttons_timers) {
-		window.draw(val.second->getRect());
+	if (is_playing) {
+		for (std::pair<Button*, Timer*> val : buttons_timers) {
+			window.draw(val.second->getRect());
+		}
 	}
 }
 
 void Canvas::Update(sf::RenderWindow& window) {
-	if (money_tick->getEnd()) {
-		money += MONEY_PER_TICK;
-		money_tick->Restart();
-	}
+	if (is_playing) {
+		if (money_tick->getEnd()) {
+			money += MONEY_PER_TICK;
+			money_tick->Restart();
+		}
 
-	money_tick->Update();
-	money_txt.setString(std::to_string(money));
+		money_tick->Update();
+		money_txt.setString(std::to_string(money));
 
-	for (std::pair<Button*, Timer*> val : buttons_timers) {
-		if (val.second->getEnd()) {
-			UnitType u = units[val.first];
-			if (u == MELEE && money - MELEE_COST >= 0 || u == RANGE && money - RANGE_COST >= 0 || u == TANK && money - TANK_COST >= 0
-				|| u == SUPPORT && money - SUPPORT_COST >= 0 || u == TOWER && money - (TOWER_COST + TOWER_COST_SCALE * tower_updates_counter) >= 0) {
-				val.first->setActive(true);
-			} 
+		for (std::pair<Button*, Timer*> val : buttons_timers) {
+			if (val.second->getEnd()) {
+				UnitType u = units[val.first];
+				if (u == MELEE && money - MELEE_COST >= 0 || u == RANGE && money - RANGE_COST >= 0 || u == TANK && money - TANK_COST >= 0
+					|| u == SUPPORT && money - SUPPORT_COST >= 0 || u == TOWER && money - (TOWER_COST + TOWER_COST_SCALE * tower_updates_counter) >= 0) {
+					val.first->setActive(true);
+				}
+				else {
+					val.first->setActive(false);
+				}
+				if (u == TOWER) {
+					std::string str = "Build\nTower\n     " + std::to_string(TOWER_COST + TOWER_COST_SCALE * tower_updates_counter);
+					val.first->setText(str);
+				}
+			}
 			else {
 				val.first->setActive(false);
 			}
+			val.first->Update(window);
+			val.second->Update();
 		}
-		else {
-			val.first->setActive(false);
-		}
-		val.first->Update(window);
-		val.second->Update();
+
+		money_txt.setString(std::to_string(money));
+
+		window.draw(money_txt);
 	}
-
-	money_txt.setString(std::to_string(money));
-
-	window.draw(money_txt);
+	if (!is_playing) {
+		for (std::pair<Button*, Timer*> val : buttons_timers) {
+			val.second->Restart();
+		}
+	}
+	menu->Update(window);
 }
 
 void Canvas::addButton(float x, float y, float w, float h, sf::Vector3i border_color, sf::Vector3i button_color, sf::Vector3i text_color, sf::Text text, float time, UnitType type) {
@@ -71,6 +92,14 @@ void Canvas::addButton(float x, float y, float w, float h, sf::Vector3i border_c
 }
 
 UnitType Canvas::checkClick(sf::RenderWindow& window, sf::Event& event) {
+	int click = menu->checkClick(window, event);
+	if (click == 1) {
+		is_playing = true;
+	}
+	if (click == 0) {
+		window.close();
+	}
+
 	for (std::pair<Button*, Timer*> val : buttons_timers) {
 		if (val.first->checkClick(window, event)) {
 			val.second->Restart();
@@ -102,4 +131,12 @@ UnitType Canvas::checkClick(sf::RenderWindow& window, sf::Event& event) {
 
 void Canvas::addMoney(int money) {
 	this->money += money;
+}
+
+int Canvas::getTowerUpdatesCounter() {
+	return tower_updates_counter;
+}
+
+bool Canvas::getIsPlaying() {
+	return is_playing;
 }

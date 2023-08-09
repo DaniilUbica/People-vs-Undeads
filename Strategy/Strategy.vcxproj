@@ -148,8 +148,10 @@
     <ClCompile Include="src\Consumable.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\HealthBar.cpp" />
+    <ClCompile Include="src\LoseScreen.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\Melee.cpp" />
+    <ClCompile Include="src\Menu.cpp" />
     <ClCompile Include="src\Range.cpp" />
     <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\Timer.cpp" />
@@ -169,7 +171,6 @@
     <ClInclude Include="include\Engine\MapObject.h" />
     <ClInclude Include="include\Engine\State.h" />
     <ClInclude Include="include\Features\Consumable.h" />
-    <ClInclude Include="include\Menu.h" />
     <ClInclude Include="include\Sound\SoundManager.h" />
     <ClInclude Include="include\Sound\Sounds.h" />
     <ClInclude Include="include\Textures.h" />
@@ -178,6 +179,8 @@
     <ClInclude Include="include\UI\Button.h" />
     <ClInclude Include="include\UI\Canvas.h" />
     <ClInclude Include="include\UI\HealthBar.h" />
+    <ClInclude Include="include\UI\LoseScreen.h" />
+    <ClInclude Include="include\UI\Menu.h" />
     <ClInclude Include="include\UI\Timer.h" />
     <ClInclude Include="include\Units\Bullet.h" />
     <ClInclude Include="include\Units\Melee.h" />

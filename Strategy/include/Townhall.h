@@ -20,5 +20,6 @@ public:
 	void takeDamage(int damage);
 
 	HealthBar* getHealthBar();
+	int getHealth();
 };
 
