@@ -1,6 +1,6 @@
 # Strategy
 
-Strategy game, made with [my own game engine][1], C++ and SFML
+## Strategy game, made with [my own game engine][1], C++ and SFML
 
 ![video](https://github.com/DaniilUbica/Strategy/assets/102466617/7538325f-9ad6-4d22-9ec8-921e4027af2c)
 
