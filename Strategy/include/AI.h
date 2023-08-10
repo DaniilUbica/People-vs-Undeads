@@ -1,6 +1,7 @@
 #include "../include/Engine/Globals.h"
 #include "../include/Engine/Character.h"
 #include "../include/Units/Melee.h"
+#include "../include/Units/Tank.h"
 #include "../include/Units/Range.h"
 #include "../include/UI/Timer.h"
 #include "../include/Textures.h"
@@ -9,12 +10,13 @@
 class AI {
 private:
 	int money;
-	Timer* melee, *range;
+	Timer* melee, *range, *tank;
 	Timer* money_tick;
 	int prev;
 	int ally_prev;
 	Tower* tower;
 	int tower_updates_counter = 0;
+	int kills_counter = 0;
 
 	bool canSend(UnitType type);
 	void sendUnit(std::deque<Warrior*>& units, UnitType type);

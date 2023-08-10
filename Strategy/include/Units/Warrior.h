@@ -4,8 +4,11 @@
 #include "../Townhall.h"
 
 class Warrior : public Character {
+protected:
+    int max_damage = 0;
+    int min_damage = 0;
 public:
-	~Warrior();
+	virtual ~Warrior();
 
     virtual void Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior*>& allies, Townhall* th) = 0;
     virtual bool checkCollisionWithEnemies(std::deque<Warrior*> enemies);

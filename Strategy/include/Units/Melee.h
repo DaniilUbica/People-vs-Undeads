@@ -4,7 +4,7 @@
 
 class Melee : public Warrior {
 public:
-    Melee(int x, int y, bool from_left, std::map<State, sf::Texture>& textures);
+    Melee(int x, int y, bool from_left, std::map<State, sf::Texture>& textures, int min, int max);
 
     void Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior*>& allies, Townhall* th) override;
 };

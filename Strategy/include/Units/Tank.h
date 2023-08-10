@@ -1,0 +1,11 @@
+#pragma once
+
+#include "Warrior.h"
+
+class Tank : public Warrior {
+private: 
+public:
+	Tank(int x, int y, bool from_left, std::map<State, sf::Texture>& textures, int min, int max);
+
+	void Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior*>& allies, Townhall* th) override;
+};

@@ -3,6 +3,7 @@
 
 #include "./include/Units/Melee.h"
 #include "./include/Units/Range.h"
+#include "./include/Units/Tank.h"
 #include "./include/UI/Canvas.h"
 #include "./include/Townhall.h"
 #include "./include/AI.h"
@@ -17,7 +18,9 @@ void checkReword(std::deque<Warrior*> enemies, int& prev_amount, Canvas& canvas)
 }
 
 int main() {
-    to_menu:
+to_menu:
+    int min_damage = 0;
+    int max_damage = 0;
     srand(time(NULL));
 
     setTextures();
@@ -38,8 +41,11 @@ int main() {
 
     Canvas canvas(font);
     canvas.addButton(start_btn_pos, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Melee\n       50", font), MELEE_COOLDOWN, MELEE);
-    canvas.addButton(start_btn_pos + 60, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Range\n       70", font), RANGE_COOLDOWN, RANGE);
+    canvas.addButton(start_btn_pos + 60, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Range\n       75", font), RANGE_COOLDOWN, RANGE);
+    canvas.addButton(start_btn_pos + 120, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("  Tank\n     150", font), TANK_COOLDOWN, TANK);
     canvas.addButton(1200, 50.0, 50.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Build\nTower\n     "  + std::to_string(TOWER_COST + TOWER_COST_SCALE * canvas.getTowerUpdatesCounter()), font), 5.0, TOWER);
+    canvas.addButton(1130, 50.0, 60.0, 50.0, sf::Vector3i(168, 79, 79), sf::Vector3i(212, 73, 73), sf::Vector3i(255, 255, 255), sf::Text("Upgrade\n  Damage\n         200", font), 5.0, UPGRADE);
+
 
     Townhall th_player(-50, 475, 50, 100, human_th);
     Townhall th_enemy(1230, 540, 50, 100, orc_portal);
@@ -139,13 +145,20 @@ int main() {
             }
             switch (unit) {
             case MELEE:
-                player.push_back(new Melee(start_x, PLAYER_START_Y + SPRITE_SIZE, true, human_melee_animation));
+                player.push_back(new Melee(start_x, PLAYER_START_Y + SPRITE_SIZE, true, human_melee_animation, 4 + min_damage, 12 + max_damage));
                 break;
             case RANGE:
                 player.push_back(new Range(start_x, PLAYER_START_Y + SPRITE_SIZE, true, human_melee_animation));
                 break;
+            case TANK:
+                player.push_back(new Tank(start_x, PLAYER_START_Y + SPRITE_SIZE, true, human_melee_animation, 1 + min_damage, 4 + max_damage));
+                break;
             case TOWER:
                 tower.addTowerDamage();
+                break;
+            case UPGRADE:
+                max_damage += 3;
+                min_damage += 4;
                 break;
             default:
                 break;

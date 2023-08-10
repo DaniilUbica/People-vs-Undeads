@@ -24,6 +24,7 @@ constexpr auto ANIMATION_SPEED = 0.003;
 
 constexpr auto MELEE_COOLDOWN = 3.0;
 constexpr auto RANGE_COOLDOWN = 4.0;
+constexpr auto TANK_COOLDOWN = 7.0;
 
 constexpr auto START_MONEY_VALUE = 500;
 constexpr auto MELEE_COST = 50;
@@ -31,6 +32,7 @@ constexpr auto RANGE_COST = 75;
 constexpr auto TANK_COST = 150;
 constexpr auto SUPPORT_COST = 250;
 constexpr auto TOWER_COST = 300;
+constexpr auto DAMAGE_UPGRADE_COST = 200;
 
 constexpr auto KILL_REWARD = 50;
 
@@ -49,4 +51,6 @@ constexpr auto TOWER_ATTACK_SCALE = 4;
 constexpr auto TOWER_COST_SCALE = 100;
 constexpr auto TOWER_ATTACK_RANGE = 300;
 
-constexpr auto ALLY_DEATH_REWARD = 10;
+constexpr auto ALLY_DEATH_REWARD = 0;
+
+constexpr auto KILLS_TO_UPGRADE_TOWER = 25;

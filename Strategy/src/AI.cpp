@@ -1,15 +1,16 @@
 #include "../include/AI.h"
-#include <iostream>
 
 AI::AI(std::deque<Warrior*>& units) {
-	money = START_MONEY_VALUE;
+	money = START_MONEY_VALUE + 200;
 	melee = new Timer(MELEE_COOLDOWN, 0, 0, 0, 50);
 	range = new Timer(RANGE_COOLDOWN, 0, 0, 0, 50);
+	tank = new Timer(TANK_COOLDOWN, 0, 0, 0, 50);
 	prev = units.size();
 	ally_prev = 0;
 	money_tick = new Timer(1, 0, 0, 0, 5);
 
 	tower = new Tower(ENEMY_START_X, ENEMY_START_Y, false);
+	tower->addTowerDamage();
 }
 
 AI::~AI() {
@@ -25,12 +26,12 @@ void AI::Update(float time, std::deque<Warrior*>& units, std::deque<Warrior*>& e
 	money_tick->Update();
 	melee->Update();
 	range->Update();
+	tank->Update();
 	tower->Update(time, enemies);
-	std::cout << money << "\n";
 }
 
 void AI::Analyse(std::deque<Warrior*>& units, std::deque<Warrior*>& enemies) {
-	int choice = rand() % 2 + 0;
+	int choice = rand() % 3 + 0;
 
 	if (ally_prev > units.size()) {
 		money += ALLY_DEATH_REWARD;
@@ -38,22 +39,23 @@ void AI::Analyse(std::deque<Warrior*>& units, std::deque<Warrior*>& enemies) {
 	ally_prev = units.size();
 
 	checkReward(enemies);
-	if (!enemies.empty() && money <= MELEE_COST && units.empty()) {
-		money += KILL_REWARD;
+
+	if (melee->getEnd() && choice == 0) {
+		sendUnit(units, MELEE);
+		melee->Restart();
 	}
-	if ((enemies.empty() && units.size() >= 3 || 
-			units.size() - enemies.size() >= 1) && canSend(TOWER)) {
-		buildTower();
+	if (tank->getEnd() && choice == 2) {
+		sendUnit(units, TANK);
+		tank->Restart();
 	}
-	else {
-		if (melee->getEnd() && choice == 0) {
-			sendUnit(units, MELEE);
-			melee->Restart();
-		}
-		if (range->getEnd() && choice == 1) {
-			sendUnit(units, RANGE);
-			range->Restart();
-		}
+	if (range->getEnd() && choice == 1) {
+		sendUnit(units, RANGE);
+		range->Restart();
+	}
+
+	if (kills_counter >= KILLS_TO_UPGRADE_TOWER) {
+		tower->addTowerDamage();
+		kills_counter = 0;
 	}
 }
 
@@ -70,6 +72,7 @@ Tower* AI::getTower() {
 void AI::checkReward(std::deque<Warrior*> enemies) {
 	if (prev > enemies.size()) {
 		money += KILL_REWARD;
+		kills_counter++;
 	}
 	prev = enemies.size();
 }
@@ -84,13 +87,13 @@ void AI::buildTower() {
 
 void AI::sendUnit(std::deque<Warrior*>& units, UnitType type) {
 	int start_x = ENEMY_START_X;
-	if (!units.empty() && units.back()->getPosition().x <= PLAYER_START_X) {
+	if (!units.empty() && units.back()->getPosition().x >= ENEMY_START_X) {
 		start_x = units.back()->getPosition().x + INTERVAL;
 	}
 	switch (type) {
 	case MELEE:
 		if (canSend(type)) {
-			units.push_back(new Melee(start_x, ENEMY_START_Y + SPRITE_SIZE, false, orc_melee_animation));
+			units.push_back(new Melee(start_x, ENEMY_START_Y + SPRITE_SIZE, false, orc_melee_animation, 4, 12));
 			money -= MELEE_COST;
 		}
 		break;
@@ -103,6 +106,10 @@ void AI::sendUnit(std::deque<Warrior*>& units, UnitType type) {
 	case SUPPORT:
 		break;
 	case TANK:
+		if (canSend(type)) {
+			units.push_back(new Tank(start_x, ENEMY_START_Y + SPRITE_SIZE, false, orc_melee_animation, 1, 4));
+			money -= TANK_COST;
+		}
 		break;
 	case NO_TYPE:
 		break;

@@ -153,6 +153,7 @@
     <ClCompile Include="src\Menu.cpp" />
     <ClCompile Include="src\Range.cpp" />
     <ClCompile Include="src\SoundManager.cpp" />
+    <ClCompile Include="src\Tank.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Tower.cpp" />
     <ClCompile Include="src\Townhall.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="include\Units\Bullet.h" />
     <ClInclude Include="include\Units\Melee.h" />
     <ClInclude Include="include\Units\Range.h" />
+    <ClInclude Include="include\Units\Tank.h" />
     <ClInclude Include="include\Units\Warrior.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

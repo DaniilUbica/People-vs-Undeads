@@ -53,7 +53,8 @@ void Canvas::Update(sf::RenderWindow& window) {
 			if (val.second->getEnd()) {
 				UnitType u = units[val.first];
 				if (u == MELEE && money - MELEE_COST >= 0 || u == RANGE && money - RANGE_COST >= 0 || u == TANK && money - TANK_COST >= 0
-					|| u == SUPPORT && money - SUPPORT_COST >= 0 || u == TOWER && money - (TOWER_COST + TOWER_COST_SCALE * tower_updates_counter) >= 0) {
+					|| u == SUPPORT && money - SUPPORT_COST >= 0 || u == TOWER && money - (TOWER_COST + TOWER_COST_SCALE * tower_updates_counter) >= 0 || 
+						u == UPGRADE && money - DAMAGE_UPGRADE_COST >= 0) {
 					val.first->setActive(true);
 				}
 				else {
@@ -119,6 +120,9 @@ UnitType Canvas::checkClick(sf::RenderWindow& window, sf::Event& event) {
 			case TOWER:
 				money -= TOWER_COST + TOWER_COST_SCALE * tower_updates_counter;
 				tower_updates_counter++;
+				break;
+			case UPGRADE:
+				money -= DAMAGE_UPGRADE_COST;
 				break;
 			default:
 				break;

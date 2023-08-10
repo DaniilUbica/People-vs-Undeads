@@ -1,18 +1,17 @@
-#include "../include/Units/Melee.h"
-#include "../include/Textures.h"
+#include "../include/Units/Tank.h"
 
-Melee::Melee(int x, int y, bool from_left, std::map<State, sf::Texture>& textures, int min, int max) {
+Tank::Tank(int x, int y, bool from_left, std::map<State, sf::Texture>& textures, int min, int max) {
     idle_animation = new Animation(textures[STAY], 0, 0, 22, 32, 10, ANIMATION_SPEED, 32);
     run_animation = new Animation(textures[RUN], 0, 0, 24, 32, 10, ANIMATION_SPEED, 32);
     attack_animation = new Animation(textures[ATTACK], 0, 0, 32, 32, 10, ANIMATION_SPEED * 1.3, 32);
     death_animation = new Animation(textures[DEATH], 0, 0, 32, 32, 14, ANIMATION_SPEED * 1.3, 32);
 
-    type = MELEE;
+    type = TANK;
 
     this->max_damage = max;
     this->min_damage = min;
 
-    this->health = 40;
+    this->health = 90;
     this->damage = 1;
     this->healthbar = new HealthBar(coordX, coordY, health, 32);
 
@@ -24,7 +23,7 @@ Melee::Melee(int x, int y, bool from_left, std::map<State, sf::Texture>& texture
     state = RUN;
 }
 
-void Melee::Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior*>& allies, Townhall* th) {
+void Tank::Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior*>& allies, Townhall* th) {
     if (health > 0) {
 
         this->damage = rand() % max_damage + min_damage;
@@ -57,7 +56,7 @@ void Melee::Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior
             this->sprite = attack_animation->Tick(time, !from_left);
             if (!enemies.empty()) {
                 Attack(enemies.front());
-            } 
+            }
             else {
                 damage = 1;
                 Attack(th);
@@ -84,4 +83,5 @@ void Melee::Update(float time, std::deque<Warrior*>& enemies, std::deque<Warrior
 
     this->sprite.setPosition(coordX, coordY);
     this->sprite.setScale(1.5, 1.5);
+    this->sprite.setColor(sf::Color::Red);
 }

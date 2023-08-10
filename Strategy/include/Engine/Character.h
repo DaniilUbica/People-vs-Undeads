@@ -14,6 +14,7 @@ enum UnitType {
 	SUPPORT,
 	TANK,
 	TOWER,
+	UPGRADE,
 	NO_TYPE,
 };
 
